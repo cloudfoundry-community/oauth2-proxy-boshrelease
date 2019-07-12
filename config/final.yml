@@ -1,5 +1,5 @@
 ---
-name: oauth2-proxy-boshrelease
+name: oauth2-proxy
 blobstore:
   provider: s3
   options:
