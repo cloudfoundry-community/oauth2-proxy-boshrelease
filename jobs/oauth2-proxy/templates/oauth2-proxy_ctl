@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -eu
+
+RUN_DIR=/var/vcap/sys/run/oauth2-proxy
+LOG_DIR=/var/vcap/sys/log/oauth2-proxy
+TMP_DIR=/var/vcap/sys/tmp/oauth2-proxy
+STORE_DIR=/var/vcap/store/oauth2-proxy
+mkdir -p ${RUN_DIR} ${LOG_DIR} ${TMP_DIR} ${STORE_DIR}
+
+PIDFILE=${RUN_DIR}/oauth2-proxy.pid
+
+# shellcheck source=../../../src/common/utils.sh
+source "/var/vcap/packages/oauth2-proxy/common/utils.sh"
+exec 1>> "${LOG_DIR}/$(basename "$0").stdout.log"
+exec 2>> "${LOG_DIR}/$(basename "$0").stderr.log"
+
+export PATH=/var/vcap/packages/oauth2-proxy/bin:${PATH}
+
+case $1 in
+  start)
+    pid_guard ${PIDFILE} "oauth2-proxy"
+    echo $$ > ${PIDFILE}
+
+    exec chpst -u vcap:vcap oauth2_proxy-linux-amd64 \
+      -http-address="<%= p('address') %>" \
+      -upstream="<%= p('upstream') %>" \
+      -provider="<%= p('provider') %>" \
+      -client-id="<%= p('client_id') %>" \
+      -client-secret="<%= p('client_secret') %>" \
+      -cookie-secret="<%= p('cookie_secret') %>" \
+      -email-domain="<%= p('email_domain') %>" \
+      <% if_p('redirect_url') do |redirect_url| %>-redirect-url="<%= redirect_url %>" <% end %> \
+      <% if_p('login_url') do |login_url| %>-login-url="<%= login_url %>" <% end %> \
+      <% if_p('redeem_url') do |redeem_url| %>-redeem-url="<%= redeem_url %>" <% end %> \
+      <% if_p('validate_url') do |validate_url| %>-validate-url="<%= validate_url %>" <% end %> \
+      <% if_p('oidc_issuer_url') do |oidc_issuer_url| %>-oidc-issuer-url="<%= oidc_issuer_url %>" <% end %> \
+      >>  ${LOG_DIR}/oauth2-proxy.stdout.log \
+      2>> ${LOG_DIR}/oauth2-proxy.stderr.log
+    ;;
+
+  stop)
+    kill_and_wait ${PIDFILE}
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+
+esac
+exit 0

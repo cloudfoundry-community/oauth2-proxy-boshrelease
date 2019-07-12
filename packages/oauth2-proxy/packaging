@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Copy common utils
+mkdir -p "${BOSH_INSTALL_TARGET}/common"
+cp "${BOSH_COMPILE_TARGET}/common/utils.sh" "${BOSH_INSTALL_TARGET}/common"
+
+# Extract oauth2-proxy package
+mkdir -p "${BOSH_INSTALL_TARGET}/bin"
+tar xzf oauth2-proxy/oauth2_proxy-v3.2.0.linux-amd64.go1.11.tar.gz \
+  -C "${BOSH_INSTALL_TARGET}/bin" --strip-components 1

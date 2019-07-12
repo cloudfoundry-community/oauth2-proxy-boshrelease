@@ -1,0 +1,32 @@
+---
+name: oauth2-proxy
+
+templates:
+  oauth2-proxy_ctl: bin/oauth2-proxy_ctl
+
+packages:
+  - oauth2-proxy
+
+properties:
+  address:
+    description: "[http://]<addr>:<port> or unix://<path> to listen on for HTTP clients"
+  upstream:
+    description: "the http url(s) of the upstream endpoint or file:// paths for static files. Routing is based on the path"
+  provider:
+    description: "OAuth provider"
+  client_id:
+    description: "the OAuth Client ID: ie: "123456.apps.googleusercontent.com""
+  client_secret:
+    description: "the OAuth Client Secret"
+  email_domain:
+    description: "authenticate emails with the specified domain (may be given multiple times). Use * to authenticate any email"
+  redeem_url:
+    description: "Token redemption endpoint"
+  redirect_url:
+    description: "the OAuth Redirect URL. ie: "https://internalapp.yourcompany.com/oauth2/callback""
+  login_url:
+    description: "Authentication endpoint"
+  validate_url:
+    description: "Access token validation endpoint"
+  oidc_issuer_url:
+    description: "the OpenID Connect issuer URL. ie: "https://accounts.google.com""
