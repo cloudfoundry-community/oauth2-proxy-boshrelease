@@ -1,0 +1,32 @@
+---
+name: oauth2-proxy
+
+releases:
+- name: oauth2-proxy
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-xenial
+  version: latest
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 5000-60000
+  update_watch_time: 5000-60000
+
+instance_groups:
+- name: oauth2-proxy
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: oauth2-proxy
+    release: oauth2-proxy
+    properties: {}
+  vm_type: default
+  stemcell: default
+  networks:
+  - name: default
+
+variables: []
