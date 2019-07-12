@@ -35,6 +35,7 @@ case $1 in
       <% if_p('redeem_url') do |redeem_url| %>-redeem-url="<%= redeem_url %>" <% end %> \
       <% if_p('validate_url') do |validate_url| %>-validate-url="<%= validate_url %>" <% end %> \
       <% if_p('oidc_issuer_url') do |oidc_issuer_url| %>-oidc-issuer-url="<%= oidc_issuer_url %>" <% end %> \
+      <% if_p('azure_tenant') do |tenant| %>-azure-tenant="<%= tenant %>" <% end %> \
       >>  ${LOG_DIR}/oauth2-proxy.stdout.log \
       2>> ${LOG_DIR}/oauth2-proxy.stderr.log
     ;;
