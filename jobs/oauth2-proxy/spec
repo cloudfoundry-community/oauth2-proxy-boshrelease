@@ -2,35 +2,151 @@
 name: oauth2-proxy
 
 templates:
-  oauth2-proxy_ctl: bin/oauth2-proxy_ctl
+  bin/oauth2-proxy_ctl.erb: bin/oauth2-proxy_ctl
+  config/google_credentials.json.erb: config/google_credentials.json
+  config/htpasswd.erb: config/htpasswd
+  config/jwt_key.pem.erb: config/jwt_key.pem
+  config/tls_cert.pem.erb: config/tls_cert.pem
+  config/tls_key.pem.erb: config/tls_key.pem
 
 packages:
   - oauth2-proxy
 
 properties:
-  address:
-    description: "[http://]<addr>:<port> or unix://<path> to listen on for HTTP clients"
-  upstream:
-    description: "the http url(s) of the upstream endpoint or file:// paths for static files. Routing is based on the path"
-  provider:
-    description: "OAuth provider"
-  client_id:
+  oauth2-proxy.acr_values:
+    description: "string: optional, used by login.gov (default http://idmanagement.gov/ns/assurance/loa/1)"
+  oauth2-proxy.approval_prompt:
+    description: "string: OAuth approval_prompt (default 'force')"
+  oauth2-proxy.auth_logging:
+    description: "bool: Log authentication attempts (default true)"
+  oauth2-proxy.auth_logging_format:
+    description: "string: Template for authentication log lines"
+  oauth2-proxy.azure_tenant:
+    description: "string: go to a tenant-specific or common (tenant-independent) endpoint"
+  oauth2-proxy.basic_auth_password:
+    description: "string: the password to set when passing the HTTP Basic Auth header"
+  oauth2-proxy.client_id:
     description: "the OAuth Client ID: ie: 123456.apps.googleusercontent.com"
-  client_secret:
+  oauth2-proxy.client_secret:
     description: "the OAuth Client Secret"
-  cookie_secret:
+  oauth2-proxy.cookie_domain:
+    description: "string: an optional cookie domain to force cookies to (ie: .yourcompany.com)"
+  oauth2-proxy.cookie_expire:
+    description: "duration: expire timeframe for cookie (default 168h0m0s)"
+  oauth2-proxy.cookie_httponly:
+    description: "set HttpOnly cookie flag (default true)"
+  oauth2-proxy.cookie_name:
+    description: "string: the name of the cookie that the oauth_proxy creates (default '_oauth2_proxy')"
+  oauth2-proxy.cookie_path:
+    description: "string: an optional cookie path to force cookies to (ie: /poc/)* (default '/')"
+  oauth2-proxy.cookie_refresh:
+    description: "duration: refresh the cookie after this duration; 0 to disable"
+  oauth2-proxy.cookie_secret:
     description: "the seed string for secure cookies (optionally base64 encoded)"
-  email_domain:
+  oauth2-proxy.cookie_secure:
+    description: "set secure (HTTPS) cookie flag (default true)"
+  oauth2-proxy.display_htpasswd_form:
+    description: "display username / password login form if an htpasswd file is provided (default true)"
+  oauth2-proxy.email_domain:
     description: "authenticate emails with the specified domain (may be given multiple times). Use * to authenticate any email"
-  redeem_url:
-    description: "Token redemption endpoint"
-  redirect_url:
-    description: "the OAuth Redirect URL. ie: https://internalapp.yourcompany.com/oauth2/callback"
-  login_url:
+    default: "*"
+  oauth2-proxy.flush_interval:
+    description: "period between flushing response buffers when streaming responses (default '1s')"
+  oauth2-proxy.banner:
+    description: "string: custom banner string. Use '-' to disable default banner"
+  oauth2-proxy.footer:
+    description: "string: custom footer string. Use '-' to disable default footer"
+  oauth2-proxy.gcp_healthchecks:
+    description: "will enable /liveness_check, /readiness_check, and / (with the proper user-agent) endpoints that will make it work well with GCP App Engine and GKE Ingresses (default false)"
+  oauth2-proxy.github_org:
+    description: "string: restrict logins to members of this organisation"
+  oauth2-proxy.github_team:
+    description: "string: restrict logins to members of any of these teams (slug), separated by a comma"
+  oauth2-proxy.google_admin_email:
+    description: "string: the google admin to impersonate for api calls"
+  oauth2-proxy.google_groups:
+    description: "array: restrict logins to members of these google groups"
+  oauth2-proxy.google_service_account_json:
+    description: "string: Google service account json credentials"
+  oauth2-proxy.htpasswd:
+    description: "string: additionally authenticate against a htpasswd file. Entries must be created with 'htpasswd -s' for SHA encryption"
+  oauth2-proxy.http_address:
+    description: "[http://]<addr>:<port> or unix://<path> to listen on for HTTP clients"
+  oauth2-proxy.https_address:
+    description: "<addr>:<port> to listen on for HTTPS clients"
+  oauth2-proxy.logging_local_time:
+    description: "If the time in log files and backup filenames are local or UTC time (default true)"
+  oauth2-proxy.jwt_key:
+    description: "string: private key in PEM format used to sign JWT, required by login.gov"
+  oauth2-proxy.login_url:
     description: "Authentication endpoint"
-  validate_url:
-    description: "Access token validation endpoint"
-  oidc_issuer_url:
+  oauth2-proxy.insecure_oidc_allow_unverified_email:
+    description: "bool: don't fail if an email address in an id_token is not verified"
+  oauth2-proxy.oidc_issuer_url:
     description: "the OpenID Connect issuer URL. ie: https://accounts.google.com"
-  azure_tenant:
-    description: "go to a tenant-specific or common (tenant-independent) endpoint."
+  oauth2-proxy.oidc_jwks_url:
+    description: "string: OIDC JWKS URI for token verification; required if OIDC discovery is disabled"
+  oauth2-proxy.pass_access_token:
+    description: "bool: pass OAuth access_token to upstream via X-Forwarded-Access-Token header"
+  oauth2-proxy.pass_authorization_header:
+    description: "bool: pass OIDC IDToken to upstream via Authorization Bearer header"
+  oauth2-proxy.pass_basic_auth:
+    description: "bool: pass HTTP Basic Auth, X-Forwarded-User and X-Forwarded-Email information to upstream (default true)"
+  oauth2-proxy.pass_host_header:
+    description: "bool: pass the request Host Header to upstream (default true)"
+  oauth2-proxy.pass_user_headers:
+    description: "bool: pass X-Forwarded-User and X-Forwarded-Email information to upstream (default true)"
+  oauth2-proxy.profile_url:
+    description: "string: Profile access endpoint"
+  oauth2-proxy.provider:
+    description: "string: OAuth provider (default 'google')"
+  oauth2-proxy.proxy_prefix:
+    description: "string: the url root path that this proxy should be nested under (e.g. /<oauth2>/sign_in) (default '/oauth2')"
+  oauth2-proxy.proxy_websockets:
+    description: "enables WebSocket proxying (default true)"
+  oauth2-proxy.pubjwk_url:
+    description: "string: JWK pubkey access endpoint: required by login.gov"
+  oauth2-proxy.redeem_url:
+    description: "Token redemption endpoint"
+  oauth2-proxy.redirect_url:
+    description: "string: the OAuth Redirect URL. ie: https://internalapp.yourcompany.com/oauth2/callback"
+  oauth2-proxy.request_logging:
+    description: "bool: Log requests to stdout (default true)"
+  oauth2-proxy.request_logging_format:
+    description: "string: Template for request log lines"
+  oauth2-proxy.resource:
+    description: "string: The resource that is protected (Azure AD only)"
+  oauth2-proxy.scope:
+    description: "string: OAuth scope specification"
+  oauth2-proxy.set_xauthrequest:
+    description: "bool: set X-Auth-Request-User and X-Auth-Request-Email response headers (useful in Nginx auth_request mode)"
+  oauth2-proxy.set_authorization_header:
+    description: "bool: set Authorization Bearer response header (useful in Nginx auth_request mode)"
+  oauth2-proxy.signature_key:
+    description: "string: GAP-Signature request signature key (algorithm:secretkey)"
+  oauth2-proxy.skip_auth_preflight:
+    description: "bool: skip-auth-preflight"
+  oauth2-proxy.skip_auth_regex:
+    description: "array: bypass authentication for requests path's that match"
+  oauth2-proxy.skip_jwt_bearer_tokens:
+    description: "bool: will skip requests that have verified JWT bearer tokens"
+  oauth2-proxy.skip_oidc_discovery:
+    description: "bool: bypass OIDC endpoint discovery. login-url, redeem-url and oidc-jwks-url must be configured in this case"
+  oauth2-proxy.skip_provider_button:
+    description: "bool: will skip sign-in-page to directly reach the next step: oauth/start"
+  oauth2-proxy.ssl_insecure_skip_verify:
+    description: "bool: skip validation of certificates presented when using HTTPS"
+  oauth2-proxy.standard_logging:
+    description: "bool: Log standard runtime information (default true)"
+  oauth2-proxy.standard_logging_format:
+    description: "string: Template for standard log lines"
+  oauth2-proxy.tls_cert:
+    description: "string: TLS certificate (PEM format)"
+  oauth2-proxy.tls_key:
+    description: "string: TLS private key (PEM format)"
+  oauth2-proxy.upstream:
+    description: "string: the http url(s) of the upstream endpoint or file:// paths for static files. Routing is based on the path"
+  oauth2-proxy.validate_url:
+    description: "string: Access token validation endpoint"
+  oauth2-proxy.whitelist_domain:
+    description: "string: allowed domains for redirection after authentication. Prefix domain with a . to allow subdomains (eg .example.com)"
