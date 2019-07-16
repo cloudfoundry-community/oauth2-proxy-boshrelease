@@ -1,0 +1,66 @@
+---
+# Apply this ops file to your prometheus-boshrelease deployment
+- type: remove
+  path: /instance_groups/name=nginx/jobs/name=nginx/properties/nginx/alertmanager/auth_users
+
+- type: remove
+  path: /instance_groups/name=nginx/jobs/name=nginx/properties/nginx/prometheus/auth_users
+
+- type: replace
+  path: /instance_groups/name=nginx/jobs/name=nginx/properties/nginx/prometheus
+  value:
+    http_port: 8081
+    server_name: prometheus.((system_domain))
+    headers: &security-headers
+      X-Frame-Options: DENY
+      Strict-Transport-Security: "max-age=31536000; preload"
+
+- type: replace
+  path: /instance_groups/name=nginx/jobs/name=nginx/properties/nginx/alertmanager
+  value:
+    http_port: 8081
+    server_name: alertmanager.((system_domain))
+    headers: *security-headers
+
+- type: replace
+  path: /instance_groups/name=nginx/jobs/name=route_registrar/properties/route_registrar/routes/name=alertmanager
+  value:
+    name: alertmanager
+    registration_interval: 20s
+    port: 8081
+    uris: [ alertmanager.((system_domain)) ]
+
+- type: replace
+  path: /instance_groups/name=nginx/jobs/name=route_registrar/properties/route_registrar/routes/name=prometheus
+  value:
+    name: prometheus
+    registration_interval: 20s
+    port: 8081
+    uris: [ prometheus.((system_domain)) ]
+
+- type: replace
+  path: /instance_groups/name=nginx/jobs/name=oauth2-proxy?
+  value:
+    name: oauth2-proxy
+    release: oauth2-proxy
+    properties:
+      oauth2-proxy:
+        address: http://0.0.0.0:8080
+        client_id: ((oauth2_proxy_client_id))
+        client_secret: ((oauth2_proxy_client_secret))
+        cookie_secret: ((oauth2_proxy_cookie_secret))
+        oidc_issuer_url: ((oidc_issuer_url))
+        provider: oidc
+        upstream: http://127.0.0.1:8081
+
+- type: replace
+  path: /variables/-
+  value:
+    name: oauth2_proxy_cookie_secret
+    type: password
+
+- type: replace
+  path: /releases/-
+  value:
+    name: oauth2-proxy
+    version: latest
