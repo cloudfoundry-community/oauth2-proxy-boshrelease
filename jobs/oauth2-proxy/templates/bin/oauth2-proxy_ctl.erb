@@ -99,8 +99,8 @@ case $1 in
       <% if_p('oauth2-proxy.standard_logging') do |v| %>-standard-logging=<% v %> <% end %> \
       <% if_p('oauth2-proxy.standard_logging_format') do |v| %>-standard-logging-format="<% v %>" <% end %> \
       <% if_p('oauth2-proxy.tls_cert', 'tls_key') do %> \
-      -tls-cert="/var/vcap/jobs/oauth2-proxy/config/tls_cert.pem" \
-      -tls-key="/var/vcap/jobs/oauth2-proxy/config/tls_key.pem" \
+      -tls-cert-file="/var/vcap/jobs/oauth2-proxy/config/tls_cert.pem" \
+      -tls-key-file="/var/vcap/jobs/oauth2-proxy/config/tls_key.pem" \
       <% end %> \
       <% if_p('oauth2-proxy.upstream') do |v| %>-upstream="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.validate_url') do |v| %>-validate-url="<%= v %>" <% end %> \
