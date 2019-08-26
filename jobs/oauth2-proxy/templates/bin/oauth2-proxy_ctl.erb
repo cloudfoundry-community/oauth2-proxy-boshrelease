@@ -22,7 +22,7 @@ case $1 in
     pid_guard ${PIDFILE} "oauth2-proxy"
     echo $$ > ${PIDFILE}
 
-    exec chpst -u vcap:vcap oauth2-proxy \
+    exec chpst -u vcap:vcap oauth2_proxy \
       <% if_p('oauth2-proxy.acr_values') do |v| %>-acr-values="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.approval_prompt') do |v| %>-approval-prompt="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.auth_logging') do |v| %>-auth-logging=<%= v %> <% end %> \
