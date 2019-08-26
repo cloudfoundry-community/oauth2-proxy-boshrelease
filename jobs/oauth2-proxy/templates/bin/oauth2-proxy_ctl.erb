@@ -95,6 +95,7 @@ case $1 in
       <% if_p('oauth2-proxy.skip_oidc_discovery') do |v| %>-skip-oidc-discovery=<%= v %> <% end %> \
       <% if_p('oauth2-proxy.skip_provider_button') do |v| %>-skip-provider-button=<%= v %> <% end %> \
       <% if_p('oauth2-proxy.ssl_insecure_skip_verify') do |v| %>-ssl-insecure-skip-verify=<% v %> <% end %> \
+      <% if_p('oauth2-proxy.ssl_upstream_insecure_skip_verify') do |v| %>-ssl-upstream-insecure-skip-verify=<% v %> <% end %> \
       <% if_p('oauth2-proxy.standard_logging') do |v| %>-standard-logging=<% v %> <% end %> \
       <% if_p('oauth2-proxy.standard_logging_format') do |v| %>-standard-logging-format="<% v %>" <% end %> \
       <% if_p('oauth2-proxy.tls_cert', 'tls_key') do %> \

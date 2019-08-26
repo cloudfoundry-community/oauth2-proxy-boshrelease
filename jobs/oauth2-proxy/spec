@@ -138,6 +138,8 @@ properties:
     description: "bool: will skip sign-in-page to directly reach the next step: oauth/start"
   oauth2-proxy.ssl_insecure_skip_verify:
     description: "bool: skip validation of certificates presented when using HTTPS"
+  oauth2-proxy.ssl_upstream_insecure_skip_verify:
+    description: "bool: skip validation of certificates presented when using HTTPS upstreams"
   oauth2-proxy.standard_logging:
     description: "bool: Log standard runtime information (default true)"
   oauth2-proxy.standard_logging_format:
