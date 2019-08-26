@@ -50,6 +50,8 @@ properties:
   oauth2-proxy.email_domain:
     description: "authenticate emails with the specified domain (may be given multiple times). Use * to authenticate any email"
     default: "*"
+  oauth2-proxy.extra_jwt_issuers:
+    description: "if -skip-jwt-bearer-tokens is set, a list of extra JWT issuer=audience pairs"
   oauth2-proxy.flush_interval:
     description: "period between flushing response buffers when streaming responses (default '1s')"
   oauth2-proxy.banner:

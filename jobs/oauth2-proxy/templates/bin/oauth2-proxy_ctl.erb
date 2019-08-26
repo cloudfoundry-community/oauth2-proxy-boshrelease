@@ -41,6 +41,7 @@ case $1 in
       <% if_p('oauth2-proxy.cookie_secure') do |v| %>-cookie-secure=<%= v %> <% end %> \
       <% if_p('oauth2-proxy.display_htpasswd_form') do |v| %>-display-htpasswd-form=<%= v %> <% end %> \
       <% if_p('oauth2-proxy.email_domain') do |v| %>-email-domain="<%= v %>" <% end %> \
+      <% if_p('oauth2-proxy.extra_jwt_issuers') do |v| %>-extra-jwt-issuers="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.flush_interval') do |v| %>-flush-interval="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.banner') do |v| %>-banner="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.footer') do |v| %>-footer="<%= v %>" <% end %> \
