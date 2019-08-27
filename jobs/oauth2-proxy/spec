@@ -3,6 +3,8 @@ name: oauth2-proxy
 
 templates:
   bin/oauth2-proxy_ctl.erb: bin/oauth2-proxy_ctl
+  config/custom-templates/error.html.erb: config/custom-templates/error.html
+  config/custom-templates/sign_in.html.erb: config/custom-templates/sign_in.html
   config/google_credentials.json.erb: config/google_credentials.json
   config/htpasswd.erb: config/htpasswd
   config/jwt_key.pem.erb: config/jwt_key.pem
@@ -45,6 +47,10 @@ properties:
     description: "the seed string for secure cookies (optionally base64 encoded)"
   oauth2-proxy.cookie_secure:
     description: "set secure (HTTPS) cookie flag (default true)"
+  oauth2-proxy.custom_templates.error:
+    description: "string: custom template for the error page"
+  oauth2-proxy.custom_templates.sign_in:
+    description: "string: custom template for the sign_in page"
   oauth2-proxy.display_htpasswd_form:
     description: "display username / password login form if an htpasswd file is provided (default true)"
   oauth2-proxy.email_domain:

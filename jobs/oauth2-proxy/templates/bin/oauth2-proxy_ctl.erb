@@ -39,6 +39,9 @@ case $1 in
       <% if_p('oauth2-proxy.cookie_refresh') do |v| %>-cookie-refresh=<%= v %> <% end %> \
       <% if_p('oauth2-proxy.cookie_secret') do |v| %>-cookie-secret="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.cookie_secure') do |v| %>-cookie-secure=<%= v %> <% end %> \
+      <% if_p('oauth2-proxy.custom_templates.error', 'oauth2-proxy.custom_templates.sign_in') do %> \
+      -custom-templates-dir="/var/vcap/jobs/oauth2-proxy/config/custom-templates" \
+      <% end %> \
       <% if_p('oauth2-proxy.display_htpasswd_form') do |v| %>-display-htpasswd-form=<%= v %> <% end %> \
       <% if_p('oauth2-proxy.email_domain') do |v| %>-email-domain="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.extra_jwt_issuers') do |v| %>-extra-jwt-issuers="<%= v %>" <% end %> \
