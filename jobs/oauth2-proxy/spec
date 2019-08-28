@@ -3,6 +3,7 @@ name: oauth2-proxy
 
 templates:
   bin/oauth2-proxy_ctl.erb: bin/oauth2-proxy_ctl
+  config/authenticated-emails.erb: config/authenticated-emails
   config/custom-templates/error.html.erb: config/custom-templates/error.html
   config/custom-templates/sign_in.html.erb: config/custom-templates/sign_in.html
   config/google_credentials.json.erb: config/google_credentials.json
@@ -25,6 +26,8 @@ properties:
     description: "string: Template for authentication log lines"
   oauth2-proxy.azure_tenant:
     description: "string: go to a tenant-specific or common (tenant-independent) endpoint"
+  oauth2-proxy.authenticated_emails:
+    description: "array: authenticate against emails via file (one per line)"
   oauth2-proxy.basic_auth_password:
     description: "string: the password to set when passing the HTTP Basic Auth header"
   oauth2-proxy.client_id:

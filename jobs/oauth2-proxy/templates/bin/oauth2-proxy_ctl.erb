@@ -28,6 +28,9 @@ case $1 in
       <% if_p('oauth2-proxy.auth_logging') do |v| %>-auth-logging=<%= v %> <% end %> \
       <% if_p('oauth2-proxy.auth_logging_format') do |v| %>-auth-logging-format="<%= v %>" <% end %> \
       <% if_p('oauth2-proxy.azure_tenant') do |v| %>-azure-tenant="<%= v %>" <% end %> \
+      <% if_p('oauth2-proxy.authenticated_emails') do %> \
+      -authenticated-emails-file="/var/vcap/jobs/oauth2-proxy/config/authenticated-emails" \
+      <% end %> \
       <% if_p('oauth2-proxy.basic_auth_password') do |v| %>-basic-auth-password="<%= v %>" <% end %> \
       -client-id="<%= p('oauth2-proxy.client_id') %>" \
       -client-secret="<%= p('oauth2-proxy.client_secret') %>" \
