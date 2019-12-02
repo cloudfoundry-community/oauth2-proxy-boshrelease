@@ -80,7 +80,10 @@ properties:
   oauth2-proxy.google_service_account_json:
     description: "string: Google service account json credentials"
   oauth2-proxy.htpasswd:
-    description: "string: additionally authenticate against a htpasswd file. Entries must be created with 'htpasswd -s' for SHA encryption"
+    description: "key-value pairs: additionally authenticate against a htpasswd file"
+    example: |
+      admin: password
+      user: useRpa55w0rd
   oauth2-proxy.http_address:
     description: "[http://]<addr>:<port> or unix://<path> to listen on for HTTP clients"
   oauth2-proxy.https_address:
