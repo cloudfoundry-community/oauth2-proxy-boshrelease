@@ -1,0 +1,21 @@
+name: oauth2-proxy
+version: 0.3.0
+commit_hash: 2fee00b
+uncommitted_changes: false
+jobs:
+- name: oauth2-proxy
+  version: 71fb41faab3bf1d1b7c5c5ae3596609d643758678fa59983bf577038bf5dff91
+  fingerprint: 71fb41faab3bf1d1b7c5c5ae3596609d643758678fa59983bf577038bf5dff91
+  sha1: sha256:70b97b927777a5e46a7b1e1b42fbc866c6dcc5187a849a9ba3893948f4a5ea63
+  packages:
+  - oauth2-proxy
+packages:
+- name: oauth2-proxy
+  version: c8632ea43924c3434166e9b85939fe7ef2e335483f78cefd4a0db2ed1e73217c
+  fingerprint: c8632ea43924c3434166e9b85939fe7ef2e335483f78cefd4a0db2ed1e73217c
+  sha1: sha256:fcee68604816049757a87db201455dfc491853cf12e6294d8d49334f94afb83e
+  dependencies: []
+license:
+  version: 867758efbebd5fca853386716d5953e796c9e56d0a6847545d973d2bb8c25e45
+  fingerprint: 867758efbebd5fca853386716d5953e796c9e56d0a6847545d973d2bb8c25e45
+  sha1: sha256:b5d4bdf37f02d08dde036a313f6c6ef46e92023e706ff2411737c3573448bd70
