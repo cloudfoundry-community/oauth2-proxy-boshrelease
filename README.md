@@ -1,6 +1,6 @@
 # OAuth2 Proxy BOSH Release
 
-This is a [BOSH](http://bosh.io/) release for [OAuth2 Proxy](https://github.com/pusher/oauth2_proxy). It is intended to be deployed as a reverse proxy that provides authentication using Providers (Google, GitHub, and others) to validate accounts by email, domain or group.
+This is a [BOSH](http://bosh.io/) release for [OAuth2 Proxy](https://github.com/oauth2-proxy/oauth2-proxy). It is intended to be deployed as a reverse proxy that provides authentication using Providers (Google, GitHub, and others) to validate accounts by email, domain or group.
 
 ## Table of Contents
 
