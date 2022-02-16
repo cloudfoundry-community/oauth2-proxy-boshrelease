@@ -23,94 +23,172 @@ case $1 in
     echo $$ > ${PIDFILE}
 
     exec chpst -u vcap:vcap oauth2-proxy \
-      <% if_p('oauth2-proxy.acr_values') do |v| %>-acr-values="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.approval_prompt') do |v| %>-approval-prompt="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.auth_logging') do |v| %>-auth-logging=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.auth_logging_format') do |v| %>-auth-logging-format="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.azure_tenant') do |v| %>-azure-tenant="<%= v %>" <% end %> \
+      <% if_p('oauth2-proxy.acr_values') do |v| %>--acr-values="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.approval_prompt') do |v| %>--approval-prompt="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.auth_logging') do |v| %>--auth-logging=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.auth_logging_format') do |v| %>--auth-logging-format="<%= v %>"<% end %> \
       <% if_p('oauth2-proxy.authenticated_emails') do %> \
-      -authenticated-emails-file="/var/vcap/jobs/oauth2-proxy/config/authenticated-emails" \
+      --authenticated-emails-file="/var/vcap/jobs/oauth2-proxy/config/authenticated-emails" \
       <% end %> \
-      <% if_p('oauth2-proxy.basic_auth_password') do |v| %>-basic-auth-password="<%= v %>" <% end %> \
-      -client-id="<%= p('oauth2-proxy.client_id') %>" \
-      -client-secret="<%= p('oauth2-proxy.client_secret') %>" \
-      <% if_p('oauth2-proxy.cookie_domain') do |v| %>-cookie-domain="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.cookie_expire') do |v| %>-cookie-expire=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.cookie_httponly') do |v| %>-cookie-httponly=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.cookie_name') do |v| %>-cookie-name="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.cookie_path') do |v| %>-cookie-path="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.cookie_refresh') do |v| %>-cookie-refresh=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.cookie_secret') do |v| %>-cookie-secret="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.cookie_secure') do |v| %>-cookie-secure=<%= v %> <% end %> \
+      <% if_p('oauth2-proxy.azure_tenant') do |v| %>--azure-tenant="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.basic_auth_password') do |v| %>--basic-auth-password="<%= v %>"<% end %> \
+      --client-id="<%= p('oauth2-proxy.client_id') %>" \
+      --client-secret="<%= p('oauth2-proxy.client_secret') %>" \
+      <% p('oauth2-proxy.cookie_domains', []).each do |v| %> \
+      --cookie-domain="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.cookie_expire') do |v| %>--cookie-expire="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.cookie_httponly') do |v| %>--cookie-httponly=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.cookie_name') do |v| %>--cookie-name="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.cookie_path') do |v| %>--cookie-path="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.cookie_refresh') do |v| %>--cookie-refresh="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.cookie_secret') do |v| %>--cookie-secret="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.cookie_secure') do |v| %>--cookie-secure=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.cookie_samesite') do |v| %>--cookie-samesite="<%= v %>"<% end %> \
       <% if_p('oauth2-proxy.custom_templates.error', 'oauth2-proxy.custom_templates.sign_in') do %> \
-      -custom-templates-dir="/var/vcap/jobs/oauth2-proxy/config/custom-templates" \
+      --custom-templates-dir="/var/vcap/jobs/oauth2-proxy/config/custom-templates" \
       <% end %> \
-      <% if_p('oauth2-proxy.display_htpasswd_form') do |v| %>-display-htpasswd-form=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.email_domain') do |v| %>-email-domain="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.extra_jwt_issuers') do |v| %>-extra-jwt-issuers="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.flush_interval') do |v| %>-flush-interval="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.banner') do |v| %>-banner="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.footer') do |v| %>-footer="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.gcp_healthchecks') do |v| %>-gcp-healthchecks=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.github_org') do |v| %>-github-org="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.github_team') do |v| %>-github-team="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.google_admin_email') do |v| %>-google-admin-email="<%= v %>" <% end %> \
+      <% if_p('oauth2-proxy.custom_sign_in_logo') do |v| %>--custom-sign-in-logo="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.display_htpasswd_form') do |v| %>--display-htpasswd-form=<%= v %><% end %> \
+      <% p('oauth2-proxy.email_domains', ['*']).each do |v| %> \
+      --email-domain="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.errors_to_info_log') do |v| %>--errors-to-info-log=<%= v %><% end %> \
+      <% p('oauth2-proxy.extra_jwt_issuers', {}).each do |issuer, audience| %> \
+      --extra-jwt-issuers="<%= issuer %>=<%= audience %>" \
+      <% end %> \
+      <% p('oauth2-proxy.exclude_logging_paths', []).each do |v| %> \
+      --exclude-logging-path="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.flush_interval') do |v| %>--flush-interval="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.force_https') do |v| %>--force-https=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.force_json_errors') do |v| %>--force-json-errors=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.banner') do |v| %>--banner="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.footer') do |v| %>--footer="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.gcp_healthchecks') do |v| %>--gcp-healthchecks=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.github_org') do |v| %>--github-org="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.github_team') do |v| %>--github-team="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.github_repo') do |v| %>--github-repo="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.github_token') do |v| %>--github-token="<%= v %>"<% end %> \
+      <% p('oauth2-proxy.github_users', []).each do |v| %> \
+      --github-user="<%= v %>" \
+      <% end %> \
+      <% p('oauth2-proxy.gitlab_groups', []).each do |v| %> \
+      --gitlab-group="<%= v %>" \
+      <% end %> \
+      <% p('oauth2-proxy.gitlab_projects', []).each do |v| %> \
+      --gitlab-project="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.google_admin_email') do |v| %>--google-admin-email="<%= v %>"<% end %> \
       <% p('oauth2-proxy.google_groups', []).each do |v| %> \
-      -google-group="<%= v %>" \
+      --google-group="<%= v %>" \
       <% end %> \
       <% if_p('oauth2-proxy.google_service_account_json') do %> \
-      -google-service-account-json="${JOB_DIR}/config/google_credentials.json" \
+      --google-service-account-json="${JOB_DIR}/config/google_credentials.json" \
       <% end %> \
       <% if_p('oauth2-proxy.htpasswd') do %> \
-      -htpasswd-file="/var/vcap/jobs/oauth2-proxy/config/htpasswd" \
+      --htpasswd-file="/var/vcap/jobs/oauth2-proxy/config/htpasswd" \
       <% end %> \
-      <% if_p('oauth2-proxy.http_address') do |v| %>-http-address="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.https_address') do |v| %>-https-address="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.logging_local_time') do |v| %>-logging-local-time=<%= v %> <% end %> \
+      <% p('oauth2-proxy.htpasswd_user_groups', []).each do |v| %> \
+      --htpasswd-user-group="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.http_address') do |v| %>--http-address="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.https_address') do |v| %>--https-address="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.logging_local_time') do |v| %>--logging-local-time=<%= v %><% end %> \
       <% if_p('oauth2-proxy.jwt_key') do %> \
-      -jwt-key-file="/var/vcap/jobs/oauth2-proxy/config/jwt_key.pem" \
+      --jwt-key-file="/var/vcap/jobs/oauth2-proxy/config/jwt_key.pem" \
       <% end %> \
-      <% if_p('oauth2-proxy.login_url') do |v| %>-login-url="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.insecure_oidc_allow_unverified_email') do |v| %>-insecure-oidc-allow-unverified-email=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.oidc_issuer_url') do |v| %>-oidc-issuer-url="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.oidc_jwks_url') do |v| %>-oidc-jwks-url="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.pass_access_token') do |v| %>-pass-access-token=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.pass_authorization_header') do |v| %>-pass-authorization-header=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.pass_basic_auth') do |v| %>-pass-basic-auth=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.pass_host_header') do |v| %>-pass-host-header=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.pass_user_headers') do |v| %>-pass-user-headers=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.profile_url') do |v| %>-profile-url="<%= v %>" <% end %> \
-      -provider="<%= p('oauth2-proxy.provider') %>" \
-      <% if_p('oauth2-proxy.proxy_prefix') do |v| %>-proxy-prefix="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.proxy_websockets') do |v| %>-proxy-websockets=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.pubjwk_url') do |v| %>-pubjwk-url="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.redeem_url') do |v| %>-redeem-url="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.redirect_url') do |v| %>-redirect-url="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.request_logging') do |v| %>-request-logging=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.request_logging_format') do |v| %>-request-logging-format="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.resource') do |v| %>-resource="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.scope') do |v| %>-scope="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.set_xauthrequest') do |v| %>-set-xauthrequest=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.set_authorization_header') do |v| %>-set-authorization-header=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.signature_key') do |v| %>-signature-key="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.skip_auth_preflight') do |v| %>-skip-auth-preflight=<%= v %> <% end %> \
+      <% if_p('oauth2-proxy.login_url') do |v| %>--login-url="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.insecure_oidc_allow_unverified_email') do |v| %>--insecure-oidc-allow-unverified-email=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.insecure_oidc_skip_issuer_verification') do |v| %>--insecure-oidc-skip-issuer-verification=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.insecure_oidc_skip_nonce') do |v| %>--insecure-oidc-skip-nonce=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.oidc_issuer_url') do |v| %>--oidc-issuer-url="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.oidc_jwks_url') do |v| %>--oidc-jwks-url="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.oidc_email_claim') do |v| %>--oidc-email-claim="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.oidc_groups_claim') do |v| %>--oidc-groups-claim="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.pass_access_token') do |v| %>--pass-access-token=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.pass_authorization_header') do |v| %>--pass-authorization-header=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.pass_basic_auth') do |v| %>--pass-basic-auth=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.prefer_email_to_user') do |v| %>--prefer-email-to-user=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.pass_host_header') do |v| %>--pass-host-header=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.pass_user_headers') do |v| %>--pass-user-headers=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.profile_url') do |v| %>--profile-url="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.prompt') do |v| %>--prompt="<%= v %>"<% end %> \
+      --provider="<%= p('oauth2-proxy.provider') %>" \
+      <% if_p('oauth2-proxy.provider_ca') do %> \
+      --provider-ca-file="/var/vcap/jobs/oauth2-proxy/config/provider_ca.pem" \
+      <% end %> \
+      <% if_p('oauth2-proxy.provider_display_name') do |v| %>--provider-display-name="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.ping_path') do |v| %>--ping-path="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.ping_user_agent') do |v| %>--ping-user-agent="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.metrics_address') do |v| %>--metrics-address="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.proxy_prefix') do |v| %>--proxy-prefix="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.proxy_websockets') do |v| %>--proxy-websockets=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.pubjwk_url') do |v| %>--pubjwk-url="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.real_client_ip_header') do |v| %>--real-client-ip-header="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.redeem_url') do |v| %>--redeem-url="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.redirect_url') do |v| %>--redirect-url="<%= v %>"<% end %> \
+      <% p('oauth2-proxy.redis_cluster_connection_urls', []).each do |v| %> \
+      --redis-cluster-connection-urls="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.redis_connection_url') do |v| %>--redis-connection-url="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.redis_password') do |v| %>--redis-password="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.redis_sentinel_password') do |v| %>--redis-sentinel-password="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.redis_sentinel_master_name') do |v| %>--redis-sentinel-master-name="<%= v %>"<% end %> \
+      <% p('oauth2-proxy.redis_sentinel_connection_urls', []).each do |v| %> \
+      --redis-sentinel-connection-urls="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.redis_use_cluster') do |v| %>--redis-use-cluster=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.redis_use_sentinel') do |v| %>--redis-use-sentinel=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.request_id_header') do |v| %>--request-id-header="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.request_logging') do |v| %>--request-logging=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.request_logging_format') do |v| %>--request-logging-format="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.resource') do |v| %>--resource="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.reverse_proxy') do |v| %>--reverse-proxy=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.scope') do |v| %>--scope="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.session_cookie_minimal') do |v| %>--session-cookie-minimal=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.session_store_type') do |v| %>--session-store-type="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.set_xauthrequest') do |v| %>--set-xauthrequest=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.set_authorization_header') do |v| %>--set-authorization-header=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.set_basic_auth') do |v| %>--set-basic-auth=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.show_debug_on_error') do |v| %>--show-debug-on-error=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.signature_key') do |v| %>--signature-key="<%= v %>"<% end %> \
+      <% if_p('oauth2-proxy.silence_ping_logging') do |v| %>--silence-ping-logging=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.skip_auth_preflight') do |v| %>--skip-auth-preflight=<%= v %><% end %> \
       <% p('oauth2-proxy.skip_auth_regex', []).each do |v| %> \
-      -skip-auth-regex="<%= v %>" \
+      --skip-auth-regex="<%= v %>" \
       <% end %> \
-      <% if_p('oauth2-proxy.skip_jwt_bearer_tokens') do |v| %>-skip-jwt-bearer-tokens=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.skip_oidc_discovery') do |v| %>-skip-oidc-discovery=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.skip_provider_button') do |v| %>-skip-provider-button=<%= v %> <% end %> \
-      <% if_p('oauth2-proxy.ssl_insecure_skip_verify') do |v| %>-ssl-insecure-skip-verify=<% v %> <% end %> \
-      <% if_p('oauth2-proxy.ssl_upstream_insecure_skip_verify') do |v| %>-ssl-upstream-insecure-skip-verify=<% v %> <% end %> \
-      <% if_p('oauth2-proxy.standard_logging') do |v| %>-standard-logging=<% v %> <% end %> \
-      <% if_p('oauth2-proxy.standard_logging_format') do |v| %>-standard-logging-format="<% v %>" <% end %> \
+      <% p('oauth2-proxy.skip_auth_routes', []).each do |v| %> \
+      --skip-auth-route="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.skip_auth_strip_headers') do |v| %>--skip-auth-strip-headers=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.skip_jwt_bearer_tokens') do |v| %>--skip-jwt-bearer-tokens=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.skip_oidc_discovery') do |v| %>--skip-oidc-discovery=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.skip_provider_button') do |v| %>--skip-provider-button=<%= v %><% end %> \
+      <% if_p('oauth2-proxy.ssl_insecure_skip_verify') do |v| %>--ssl-insecure-skip-verify=<% v %><% end %> \
+      <% if_p('oauth2-proxy.ssl_upstream_insecure_skip_verify') do |v| %>--ssl-upstream-insecure-skip-verify=<% v %><% end %> \
+      <% if_p('oauth2-proxy.standard_logging') do |v| %>--standard-logging=<% v %><% end %> \
+      <% if_p('oauth2-proxy.standard_logging_format') do |v| %>--standard-logging-format="<% v %>"<% end %> \
       <% if_p('oauth2-proxy.tls_cert', 'oauth2-proxy.tls_key') do %> \
-      -tls-cert-file="/var/vcap/jobs/oauth2-proxy/config/tls_cert.pem" \
-      -tls-key-file="/var/vcap/jobs/oauth2-proxy/config/tls_key.pem" \
+      --tls-cert-file="/var/vcap/jobs/oauth2-proxy/config/tls_cert.pem" \
+      --tls-key-file="/var/vcap/jobs/oauth2-proxy/config/tls_key.pem" \
       <% end %> \
-      <% if_p('oauth2-proxy.upstream') do |v| %>-upstream="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.validate_url') do |v| %>-validate-url="<%= v %>" <% end %> \
-      <% if_p('oauth2-proxy.whitelist_domain') do |v| %>-whitelist-domain="<%= v %>" <% end %> \
+      <% p('oauth2-proxy.upstreams', []).each do |v| %> \
+      --upstream="<%= v %>" \
+      <% end %> \
+      <% p('oauth2-proxy.allowed_groups', []).each do |v| %> \
+      --allowed-group="<%= v %>" \
+      <% end %> \
+      <% p('oauth2-proxy.allowed_roles', []).each do |v| %> \
+      --allowed-role="<%= v %>" \
+      <% end %> \
+      <% if_p('oauth2-proxy.validate_url') do |v| %>--validate-url="<%= v %>"<% end %> \
+      <% p('oauth2-proxy.whitelist_domains', []).each do |v| %> \
+      --whitelist-domain="<%= v %>" \
+      <% end %> \
+      <% p('oauth2-proxy.trusted_ips', []).each do |v| %> \
+      --trusted-ip="<%= v %>" \
+      <% end %> \
       >>  ${LOG_DIR}/oauth2-proxy.stdout.log \
       2>> ${LOG_DIR}/oauth2-proxy.stderr.log
     ;;

@@ -45,13 +45,13 @@
     release: oauth2-proxy
     properties:
       oauth2-proxy:
-        address: http://0.0.0.0:8080
+        http_address: http://0.0.0.0:8080
         client_id: ((oauth2_proxy_client_id))
         client_secret: ((oauth2_proxy_client_secret))
         cookie_secret: ((oauth2_proxy_cookie_secret))
         oidc_issuer_url: ((oidc_issuer_url))
         provider: oidc
-        upstream: http://127.0.0.1:8081
+        upstreams: [ http://127.0.0.1:8081 ]
 
 - type: replace
   path: /variables/-
