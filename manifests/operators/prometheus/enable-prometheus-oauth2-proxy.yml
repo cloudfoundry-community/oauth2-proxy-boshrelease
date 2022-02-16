@@ -58,11 +58,3 @@
   value:
     name: oauth2_proxy_cookie_secret
     type: password
-
-- type: replace
-  path: /releases/-
-  value:
-    name: oauth2-proxy
-    sha1: ee47d7e26c823506a983013c39661d81c1c72964
-    url: https://github.com/Infra-Red/oauth2-proxy-boshrelease/releases/download/v0.1.0/oauth2-proxy-0.1.0.tgz
-    version: 0.1.0
