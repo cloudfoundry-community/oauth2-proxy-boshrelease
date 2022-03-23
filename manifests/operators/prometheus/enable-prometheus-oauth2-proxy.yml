@@ -45,24 +45,16 @@
     release: oauth2-proxy
     properties:
       oauth2-proxy:
-        address: http://0.0.0.0:8080
+        http_address: http://0.0.0.0:8080
         client_id: ((oauth2_proxy_client_id))
         client_secret: ((oauth2_proxy_client_secret))
         cookie_secret: ((oauth2_proxy_cookie_secret))
         oidc_issuer_url: ((oidc_issuer_url))
         provider: oidc
-        upstream: http://127.0.0.1:8081
+        upstreams: [ http://127.0.0.1:8081 ]
 
 - type: replace
   path: /variables/-
   value:
     name: oauth2_proxy_cookie_secret
     type: password
-
-- type: replace
-  path: /releases/-
-  value:
-    name: oauth2-proxy
-    sha1: ee47d7e26c823506a983013c39661d81c1c72964
-    url: https://github.com/Infra-Red/oauth2-proxy-boshrelease/releases/download/v0.1.0/oauth2-proxy-0.1.0.tgz
-    version: 0.1.0
